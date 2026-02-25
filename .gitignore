@@ -1,0 +1,21 @@
+# Ignorar archivos de configuración local 
+.settings/org.eclipse.wst.server.core.prefs
+.settings/org.eclipse.jsdt.ui.superType.container
+.settings/org.eclipse.jsdt.ui.superType.name
+
+# Carpetas de compilación
+build/
+bin/
+
+# Archivos temporales y del sistema
+*.log
+*.tmp
+*.bak
+*.swp
+.DS_Store
+Thumbs.db
+
+# Archivos de otros IDEs
+.idea/
+*.iml
+.vscode/
