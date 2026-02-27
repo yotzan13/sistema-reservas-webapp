@@ -45,7 +45,6 @@ public class AuthService {
                 usuario.setNombreCompleto(rs.getString("nombreCompleto"));
                 usuario.setRol(rs.getInt("rol"));
                 usuario.setNombreRol(rs.getString("nombreRol"));
-
                 String token = SessionManager.getInstance().crearSesion(usuario);
                 return new LoginResult(token, usuario.getNombreCompleto(), usuario.getNombreRol());
             }

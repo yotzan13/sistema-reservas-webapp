@@ -18,6 +18,7 @@ public class SessionManager {
     }
 
     public String crearSesion(Usuario usuario) {
+    	
         String token = UUID.randomUUID().toString();
         sessions.put(token, usuario);
         return token;

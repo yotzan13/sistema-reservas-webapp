@@ -12,7 +12,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 @ApplicationPath("/api")
 public class AppConfig extends ResourceConfig {
     public AppConfig() {
-        packages("controller");
+        packages("controller", "security", "exception");
         register(JacksonConfig.class);
     }
 

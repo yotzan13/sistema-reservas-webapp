@@ -9,8 +9,8 @@ public class EmailUtil {
 
     private static final String HOST     = "smtp.gmail.com";
     private static final int    PORT     = 587;
-    private static final String FROM     = "tu_correo@gmail.com";       // Cambiar
-    private static final String PASSWORD = "tu_app_password";           // App password de Gmail
+    private static final String FROM     = "hibrohi198@gmail.com";       
+    private static final String PASSWORD = "umhn wvhy mwwy utqa";           
 
     private EmailUtil() {}
 

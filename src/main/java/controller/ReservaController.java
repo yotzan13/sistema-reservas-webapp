@@ -53,7 +53,6 @@ public class ReservaController {
     @POST
     public Response crear(ReservaRequest request) {
         Usuario usuario = (Usuario) requestContext.getProperty("usuarioActual");
-        usuario.setId(1);
         ReservaResponse creada = reservaService.crearReserva(request, usuario.getId());
         return Response.status(201).entity(creada).build();
     }

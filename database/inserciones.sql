@@ -2,13 +2,12 @@ USE elsultan_db;
 
 INSERT INTO Rol(nombre) VALUES
 ('Administrador'),
-('Recepcionista'),
-('Cliente');
+('Recepcionista');
 
 INSERT INTO Usuario(nombreUsuario, contrasena, nombreCompleto, dni, telefono, correo, rol) VALUES
-('martin','admin123','Martin Fernandez Martinez', '12345678', '987654323', 'martin@gmail.com', '1'),
-('nicolas','nicolas','Nicolas Bravo Delgado', '12345671', '977654323', 'nicolas@gmail.com', '2'),
-('olivia','olivia','Olivia Campos Mora', '12345672', '957654323', 'olivia@gmail.com', '2');
+('martin','admin123','Martin Fernandez Martinez', '12345678', '987654323', 'martin@gmail.com', 1),
+('nicolas','nicolas','Nicolas Bravo Delgado', '12345671', '977654323', 'nicolas@gmail.com', 2),
+('olivia','olivia','Olivia Campos Mora', '12345672', '957654323', 'olivia@gmail.com', 2);
 
 INSERT INTO Cliente(nombre, apellido, dni, telefono, correo) VALUES
 ('Amanda', 'Mendoza Ibañez', '12345673', '947654323', 'amanda@gmail.com'),
@@ -18,11 +17,11 @@ INSERT INTO Cliente(nombre, apellido, dni, telefono, correo) VALUES
 ('Jorge', 'Nuñez Guerrero', '12345677', '987654323', 'jorge@gmail.com');
 
 INSERT INTO Mesa(numeroMesa, ubicacion, capacidad) VALUES
-('10', 'Ventana', '3'),
-('20', 'Interior', '4'),
-('30', 'Ventana', '2'),
-('40', 'Interior', '6'),
-('50', 'Terraza', '4');
+(10, 'Ventana', 3),
+(20, 'Interior', 4),
+(30, 'Ventana', 2),
+(40, 'Interior', 6),
+(50, 'Terraza', 4);
 
 INSERT INTO Reserva(fecha, hora, cantidad, estado, mesa, cliente, usuario) VALUES
 ('2026-03-01', '19:00:00', 3, 'Confirmado', 1, 1, 2),

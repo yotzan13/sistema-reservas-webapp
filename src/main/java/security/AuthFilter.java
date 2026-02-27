@@ -21,7 +21,7 @@ public class AuthFilter implements ContainerRequestFilter {
 
     // Rutas públicas que no requieren autenticación
     private static final java.util.Set<String> PUBLIC_PATHS = java.util.Set.of(
-            "/auth/login"
+            "auth/login"
     );
 
     @Override
@@ -42,7 +42,6 @@ public class AuthFilter implements ContainerRequestFilter {
 
         String token = authHeader.substring(TOKEN_PREFIX.length());
         SessionManager sessionManager = SessionManager.getInstance();
-
         if (!sessionManager.esValido(token)) {
             abort(requestContext, "Sesión inválida o expirada");
             return;
