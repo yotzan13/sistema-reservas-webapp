@@ -10,6 +10,7 @@ import model.Mesa;
 import model.Reserva;
 import model.Usuario;
 import util.EmailUtil;
+import util.TicketUtil;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -72,40 +73,66 @@ public class ReservaService {
     }
 
     public ReservaResponse cambiarEstado(int id, String nuevoEstado) {
-    	if (nuevoEstado == null || nuevoEstado.isBlank()) {
+        // 1. Validación básica
+        if (nuevoEstado == null || nuevoEstado.isBlank()) {
             throw new BusinessException("El estado es requerido", 400);
         }
+
+        // 2. Buscar la reserva actual
         ReservaResponse actual = buscarPorId(id);
 
+        // 3. Validar transición de estados (Máquina de estados)
         List<String> permitidos = TRANSICIONES_VALIDAS.getOrDefault(actual.getEstado(), List.of());
         if (!permitidos.contains(nuevoEstado)) {
             throw new BusinessException(
                     "No se puede cambiar de '" + actual.getEstado() + "' a '" + nuevoEstado + "'", 400);
         }
 
-        // Cancelación: debe ser al menos 1 día antes
-        if ("Cancelado".equals(nuevoEstado)) {
+        // 4. Restricción de cancelación
+        if ("Cancelado".equalsIgnoreCase(nuevoEstado)) {
             if (!actual.getFecha().isAfter(LocalDate.now())) {
                 throw new BusinessException("No se puede cancelar con menos de 1 día de anticipación", 400);
             }
         }
 
+        // 5. Persistir el cambio en la base de datos
         reservaDAO.actualizarEstado(id, nuevoEstado);
+        
+        // 6. Obtener la reserva actualizada
         ReservaResponse actualizado = reservaDAO.buscarPorId(id);
 
-        // Enviar correo al confirmar
-        if ("Confirmado".equals(nuevoEstado) && actualizado.getCorreoCliente() != null) {
-            try {
-                EmailUtil.enviarConfirmacion(
-                        actualizado.getCorreoCliente(),
-                        actualizado.getNombreCliente() + " " + actualizado.getApellidoCliente(),
-                        actualizado.getFecha().toString(),
-                        actualizado.getHora().toString(),
-                        actualizado.getNumeroMesa()
-                );
-            } catch (Exception e) {
-                System.err.println("Advertencia: no se pudo enviar el correo de confirmación: " + e.getMessage());
-            }
+        // 7. Lógica asíncrona para Confirmado
+        if ("Confirmado".equalsIgnoreCase(nuevoEstado)) {
+            new Thread(() -> {
+                try {
+                    System.out.println("[Thread] Procesando reserva ID: " + id);
+
+                    // Generar archivos (JSON, TXT, etc.)
+                    TicketUtil.generarArchivosReserva(actualizado);
+
+                    // Enviar correo de confirmación
+                    try {
+                        if (actualizado.getCorreoCliente() != null && !actualizado.getCorreoCliente().isBlank()) {
+                            EmailUtil.enviarConfirmacion(
+                                actualizado.getCorreoCliente(),
+                                actualizado.getNombreCliente() + " " + actualizado.getApellidoCliente(),
+                                actualizado.getFecha().toString(),
+                                actualizado.getHora().toString(),
+                                actualizado.getNumeroMesa()
+                            );
+                            System.out.println("[Thread] Correo de confirmación enviado.");
+                        }
+                    } catch (Exception e) {
+                        System.err.println("[Thread] Error al enviar el correo: " + e.getMessage());
+                    }
+
+                    System.out.println("[Thread] Procesamiento finalizado para reserva ID: " + id);
+
+                } catch (Exception e) {
+                    System.err.println("[Thread] Error crítico en procesamiento de archivos: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            }).start();
         }
 
         return actualizado;
