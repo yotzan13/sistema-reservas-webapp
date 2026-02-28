@@ -1,5 +1,6 @@
 package controller;
 
+import dto.ApiResponse;
 import dto.ReservaRequest;
 import dto.ReservaResponse;
 import model.Mesa;
@@ -15,6 +16,7 @@ import java.util.Map;
 
 @Path("/reservas")
 @Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ReservaController {
 
     private final ReservaService reservaService = new ReservaService();
@@ -23,49 +25,54 @@ public class ReservaController {
     private ContainerRequestContext requestContext;
 
     @GET
-    public Response listarTodas(@QueryParam("fecha") String fechaParam) {
-        if (fechaParam != null) {
-            LocalDate fecha = LocalDate.parse(fechaParam);
-            return Response.ok(reservaService.listarPorFecha(fecha)).build();
-        }
-        List<ReservaResponse> lista = reservaService.listarTodas();
-        return Response.ok(lista).build();
+    public Response listarTodas() {
+        return Response.ok(new ApiResponse<>(true, "Listado de reservas", reservaService.listarTodas())).build();
+    }
+
+    @GET
+    @Path("/fecha/{fecha}")
+    public Response listarPorFecha(@PathParam("fecha") String fechaParam) {
+        LocalDate fecha = LocalDate.parse(fechaParam);
+        return Response.ok(new ApiResponse<>(true, "Listado de reservas por fecha", reservaService.listarPorFecha(fecha))).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarPorId(@PathParam("id") int id) {
-        return Response.ok(reservaService.buscarPorId(id)).build();
+        ReservaResponse reserva = reservaService.buscarPorId(id);
+        return Response.ok(new ApiResponse<>(true, "Reserva encontrada", reserva)).build();
     }
 
     @GET
     @Path("/disponibilidad")
     public Response obtenerDisponibilidad(
-            @QueryParam("fecha")    String fechaParam,
-            @QueryParam("hora")     String hora,
+            @QueryParam("fecha") String fechaParam,
+            @QueryParam("hora") String hora,
             @QueryParam("cantidad") int cantidad) {
+
         LocalDate fecha = LocalDate.parse(fechaParam);
         List<Mesa> mesas = reservaService.obtenerDisponibilidad(fecha, hora, cantidad);
-        return Response.ok(mesas).build();
+        return Response.ok(new ApiResponse<>(true, "Disponibilidad obtenida", mesas)).build();
     }
-    
-    @Consumes(MediaType.APPLICATION_JSON)
+
     @POST
     public Response crear(ReservaRequest request) {
-        Usuario usuario = (Usuario) requestContext.getProperty("usuarioActual");
-        ReservaResponse creada = reservaService.crearReserva(request, usuario.getId());
-        return Response.status(201).entity(creada).build();
+        // Usamos el servicio para validar el token y obtener el usuario
+        Usuario usuario = reservaService.validarToken(requestContext);
+
+        ReservaResponse reservaCreada = reservaService.crearReserva(request, usuario.getId());
+
+        return Response.status(201)
+                .entity(new ApiResponse<>(true, "Reserva creada correctamente", reservaCreada))
+                .build();
     }
-    
-    @Consumes(MediaType.APPLICATION_JSON)
+
     @PATCH
     @Path("/{id}/estado")
     public Response cambiarEstado(@PathParam("id") int id, Map<String, String> body) {
         String nuevoEstado = body.get("estado");
-        if (nuevoEstado == null || nuevoEstado.isBlank()) {
-            return Response.status(400).entity(Map.of("error", "El estado es requerido")).build();
-        }
-        ReservaResponse actualizado = reservaService.cambiarEstado(id, nuevoEstado);
-        return Response.ok(actualizado).build();
+        ReservaResponse reservaActualizada = reservaService.cambiarEstado(id, nuevoEstado);
+        return Response.ok(new ApiResponse<>(true, "Estado actualizado correctamente", reservaActualizada))
+        		.build();
     }
 }

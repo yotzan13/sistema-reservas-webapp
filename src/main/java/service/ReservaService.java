@@ -5,8 +5,10 @@ import dao.impl.ReservaDAOImpl;
 import dto.ReservaRequest;
 import dto.ReservaResponse;
 import exception.BusinessException;
+import jakarta.ws.rs.container.ContainerRequestContext;
 import model.Mesa;
 import model.Reserva;
+import model.Usuario;
 import util.EmailUtil;
 
 import java.time.LocalDate;
@@ -70,6 +72,9 @@ public class ReservaService {
     }
 
     public ReservaResponse cambiarEstado(int id, String nuevoEstado) {
+    	if (nuevoEstado == null || nuevoEstado.isBlank()) {
+            throw new BusinessException("El estado es requerido", 400);
+        }
         ReservaResponse actual = buscarPorId(id);
 
         List<String> permitidos = TRANSICIONES_VALIDAS.getOrDefault(actual.getEstado(), List.of());
@@ -104,6 +109,14 @@ public class ReservaService {
         }
 
         return actualizado;
+    }
+    
+    public Usuario validarToken(ContainerRequestContext requestContext) {
+        Usuario usuario = (Usuario) requestContext.getProperty("usuarioActual");
+        if (usuario == null) {
+            throw new BusinessException("No autenticado", 401);
+        }
+        return usuario;
     }
 
     private void validarRequest(ReservaRequest req) {

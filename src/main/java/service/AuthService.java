@@ -56,6 +56,9 @@ public class AuthService {
     }
 
     public void logout(String token) {
+        if (!SessionManager.getInstance().esValido(token)) {
+            throw new BusinessException("Token no válido o ya cerrado", 401);
+        }
         SessionManager.getInstance().eliminarSesion(token);
     }
 }

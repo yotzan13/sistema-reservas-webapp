@@ -11,7 +11,7 @@ public class ConectarBD {
 	//declaramos la variables...
 		public static String url="jdbc:mysql://localhost:3306/elsultan_db";
 		public static String usuario="root";
-		public static String password="tu-contraseña-aqui";
+		public static String password="admin#130401";
 		private static Connection cn;
 		//creamos el metodo conectar...
 		public static Connection getConexion(){

@@ -37,7 +37,6 @@ public class MesaService {
 
         int id = mesaDAO.crear(mesa);
         mesa.setId(id);
-        System.out.println("[MesaService] Éxito: Mesa " + mesa.getNumeroMesa() + " registrada con id " + id);
         return mesa;
     }
 

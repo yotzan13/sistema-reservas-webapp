@@ -23,7 +23,9 @@ public class ClienteService {
     }
 
     public Cliente buscarPorDni(String dni) {
-        return clienteDAO.buscarPorDni(dni);
+        Cliente c = clienteDAO.buscarPorDni(dni);
+        if (c == null) throw new BusinessException("Cliente no encontrado", 404);
+        return c;
     }
 
     public Cliente crearCliente(ClienteDTO dto) {
