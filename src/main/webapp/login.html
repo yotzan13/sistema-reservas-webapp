@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/login.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>El Sultán — Iniciar Sesión</title>
+</head>
+<body>
+    <div class="login-wrapper">
+        <div class="login-brand">
+            <div class="brand-icon"><i class="bx bx-food-menu"></i></div>
+            <div class="brand-title"><span>El</span>Sultán</div>
+            <p class="brand-sub">Sistema Interno de Gestión de Reservas</p>
+        </div>
+
+        <div class="login-form-panel">
+            <h2>Bienvenido</h2>
+            <p class="sub">Ingresa tus credenciales para continuar</p>
+
+            <div class="form-field">
+                <label>Usuario</label>
+                <div class="field-input">
+                    <i class='bx bx-user'></i>
+                    <input type="text" id="username" placeholder="Nombre de usuario" autocomplete="username">
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label>Contraseña</label>
+                <div class="field-input">
+                    <i class='bx bx-lock-alt'></i>
+                    <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password">
+                </div>
+            </div>
+
+            <button class="btn-login" id="btnLogin">Ingresar</button>
+            <div class="error-msg" id="errorMsg"></div>
+        </div>
+    </div>
+    <script src="js/login.js"></script>
+</body>
+</html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Clientes — El Sultán</title>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="home.html" class="logo"><i class="bx bx-food-menu"></i>
+            <div class="logo-name"><span>El</span>Sultan</div>
+        </a>
+        <nav class="side-menu">
+            <ul>
+                <li><a href="home.html"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+                <li><a href="reservas.html"><i class='bx bxs-book'></i>Reservas</a></li>
+                <li><a href="clientes.html"><i class='bx bx-group'></i>Clientes</a></li>
+                <li><a href="mesas.html"><i class='bx bx-chair'></i>Mesas</a></li>
+            </ul>
+        </nav>
+        <nav class="side-menu">
+            <ul><li><a href="login.html" class="logout"><i class="bx bx-arrow-out-left-square-half"/></i>Salir</a></li></ul>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <header>
+            <i class='bx bx-menu'></i>
+            <span style="flex:1"></span>
+            <span class="notif cambio"></span>
+            <a href="#" class="profile"><img src="img/admin.png" alt="Usuario"></a>
+        </header>
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Gestión de Clientes</h1>
+                    <p><button class="status pending" onclick="abrirModalNuevo()">+ Registrar Cliente</button></p>
+                </div>
+                <div class="right" style="display:flex;align-items:center;gap:1rem;">
+                    <div class="form-group" style="margin:0">
+                        <input type="text" id="busqueda" placeholder="Buscar por nombre o DNI..." style="padding:8px 14px;border-radius:8px;border:1.5px solid #ddd;font-size:14px;min-width:220px">
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-data">
+                <div class="orders" style="flex:1">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Nombre</th>
+                                <th>Apellido</th>
+                                <th>DNI</th>
+                                <th>Teléfono</th>
+                                <th>Correo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyClientes">
+                            <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--dark-grey)">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== MODAL DETALLE ===== -->
+    <div id="modalDetalle" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:620px;max-width:95vw">
+            <span class="close" onclick="closeModal('modalDetalle')">&times;</span>
+            <h2 style="margin-bottom:20px"><i class='bx bxs-info-circle' style="color:#3f912e"></i> Detalle del Cliente</h2>
+            <div class="detalle-panel-2col" id="detalleContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL FORMULARIO (Crear / Editar) ===== -->
+    <div id="modalForm" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:480px;max-width:95vw">
+            <span class="close" onclick="closeModal('modalForm')">&times;</span>
+            <h2 id="modalFormTitle" style="margin-bottom:20px">Registrar Cliente</h2>
+            <input type="hidden" id="fId">
+            <div class="form-panel">
+                <div class="form-group">
+                    <label>Nombre *</label>
+                    <input type="text" id="fNombre" placeholder="Nombre">
+                    <span class="text-danger" id="eNombre"></span>
+                </div>
+                <div class="form-group">
+                    <label>Apellido *</label>
+                    <input type="text" id="fApellido" placeholder="Apellido">
+                    <span class="text-danger" id="eApellido"></span>
+                </div>
+                <div class="form-group">
+                    <label>DNI *</label>
+                    <input type="text" id="fDni" placeholder="Documento de identidad">
+                    <span class="text-danger" id="eDni"></span>
+                </div>
+                <div class="form-group">
+                    <label>Teléfono *</label>
+                    <input type="text" id="fTelefono" placeholder="Número de teléfono">
+                    <span class="text-danger" id="eTelefono"></span>
+                </div>
+                <div class="form-group">
+                    <label>Correo</label>
+                    <input type="email" id="fCorreo" placeholder="Correo electrónico (opcional)">
+                </div>
+                <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+                    <button class="cancelar" onclick="closeModal('modalForm')">Cancelar</button>
+                    <button class="status pending" id="btnGuardar" onclick="guardarCliente()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/cliente.js"></script>
+</body>
+</html>

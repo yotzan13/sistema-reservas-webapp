@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Reservas — El Sultán</title>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="home.html" class="logo"><i class="bx bx-food-menu"></i>
+            <div class="logo-name"><span>El</span>Sultan</div>
+        </a>
+        <nav class="side-menu">
+            <ul>
+                <li><a href="home.html"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+                <li><a href="reservas.html"><i class='bx bxs-book'></i>Reservas</a></li>
+                <li><a href="clientes.html"><i class='bx bx-group'></i>Clientes</a></li>
+                <li><a href="mesas.html"><i class='bx bx-chair'></i>Mesas</a></li>
+            </ul>
+        </nav>
+        <nav class="side-menu">
+            <ul><li><a href="login.html" class="logout"><i class="bx bx-arrow-out-left-square-half"/></i>Salir</a></li></ul>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <header>
+            <i class='bx bx-menu'></i>
+            <span style="flex:1"></span>
+            <span class="notif cambio"></span>
+            <a href="#" class="profile"><img src="img/admin.png" alt="Usuario"></a>
+        </header>
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Gestión de Reservas</h1>
+                    <p><button class="status pending" onclick="abrirModalNuevo()">+ Registrar Reserva</button></p>
+                </div>
+                <div class="right" style="display:flex;align-items:center;gap:1rem;">
+                    <div class="form-group" style="margin:0">
+                        <label style="font-size:13px">Fecha:</label>
+                        <input type="date" id="filtroFecha" style="padding:8px;border-radius:8px;border:1.5px solid #ddd;font-size:14px">
+                    </div>
+                    <button class="status pending" onclick="filtrarPorFecha()">Filtrar</button>
+                    <button class="cancelar" onclick="limpiarFiltro()" style="font-size:13px;padding:6px 12px">Todos</button>
+                </div>
+            </div>
+
+            <div class="bottom-data">
+                <div class="orders" style="flex:1;overflow-x:auto">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Mesa</th>
+                                <th>Personas</th>
+                                <th>Ubicación</th>
+                                <th>Estado</th>
+                                <th>Info</th>
+                                <th>Transición</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyReservas">
+                            <tr><td colspan="10" style="text-align:center;padding:24px;color:var(--dark-grey)">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== MODAL DETALLE ===== -->
+    <div id="modalDetalle" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:660px;max-width:95vw">
+            <span class="close" onclick="closeModal('modalDetalle')">&times;</span>
+            <h2 style="margin-bottom:20px"><i class='bx bxs-info-circle' style="color:#3f912e"></i> Detalle de Reserva</h2>
+            <div class="detalle-panel-2col" id="detalleContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL CAMBIO ESTADO ===== -->
+    <div id="modalEstado" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:380px;max-width:95vw;text-align:center">
+            <span class="close" onclick="closeModal('modalEstado')">&times;</span>
+            <i id="estadoIcon" class="bx" style="font-size:48px;margin:16px 0;display:block"></i>
+            <h2 id="estadoTitulo" style="margin-bottom:8px"></h2>
+            <p id="estadoMsg" style="color:var(--dark-grey);margin-bottom:24px"></p>
+            <div style="display:flex;gap:10px;justify-content:center">
+                <button class="cancelar" onclick="closeModal('modalEstado')">Cancelar</button>
+                <button id="btnConfirmarEstado" class="status pending" onclick="confirmarCambioEstado()" style="border:none;cursor:pointer;font-size:14px;font-weight:700">Confirmar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL NUEVA RESERVA (Wizard 3 pasos) ===== -->
+    <div id="modalNueva" class="modal" style="display:none;align-items:flex-start;justify-content:center;padding-top:40px">
+        <div class="modal-content" style="width:620px;max-width:95vw;max-height:85vh;overflow-y:auto">
+            <span class="close" onclick="closeModal('modalNueva')">&times;</span>
+            <h2 style="margin-bottom:20px"><i class='bx bxs-book' style="color:var(--primary)"></i> Nueva Reserva</h2>
+
+            <div class="wizard-steps">
+                <div class="wizard-step active" id="ws1">1. Datos</div>
+                <div class="wizard-step" id="ws2">2. Mesa</div>
+                <div class="wizard-step" id="ws3">3. Cliente</div>
+            </div>
+
+            <!-- PASO 1: Fecha, Hora, Cantidad -->
+            <div class="step-panel active" id="step1">
+                <div class="form-panel-2col">
+                    <div class="form-group">
+                        <label>Fecha *</label>
+                        <input type="date" id="rFecha">
+                        <span class="text-danger" id="eRFecha"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Hora *</label>
+                        <input type="time" id="rHora">
+                        <span class="text-danger" id="eRHora"></span>
+                    </div>
+                    <div class="form-group">
+                        <label>Cantidad de personas *</label>
+                        <input type="number" id="rCantidad" min="1" placeholder="Nro. personas">
+                        <span class="text-danger" id="eRCantidad"></span>
+                    </div>
+                </div>
+                <div class="opciones">
+                    <button class="status pending" onclick="irPaso2()">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PASO 2: Seleccionar Mesa -->
+            <div class="step-panel" id="step2">
+                <p style="color:var(--dark-grey);margin-bottom:16px;font-size:13px">Mesas disponibles para la fecha, hora y cantidad seleccionadas:</p>
+                <div id="listaMesas" style="max-height:300px;overflow-y:auto"></div>
+                <span class="text-danger" id="eRMesa"></span>
+                <div class="opciones">
+                    <button class="cancelar" onclick="irPaso(1)">← Volver</button>
+                    <button class="status pending" onclick="irPaso3()">Siguiente →</button>
+                </div>
+            </div>
+
+            <!-- PASO 3: Cliente -->
+            <div class="step-panel" id="step3">
+                <div class="form-group">
+                    <label>Buscar cliente por DNI o nombre</label>
+                    <input type="text" id="rBuscarCliente" placeholder="Escriba DNI o nombre..." oninput="buscarClienteWizard(this.value)">
+                </div>
+                <div id="resultadosCliente" style="margin-bottom:12px"></div>
+                <input type="hidden" id="rClienteId">
+                <span class="text-danger" id="eRCliente"></span>
+
+                <hr style="margin:16px 0;border-color:var(--grey)">
+                <p style="font-size:13px;color:var(--dark-grey);margin-bottom:8px">¿Cliente nuevo? Regístralo aquí:</p>
+                <div class="form-panel-2col">
+                    <div class="form-group">
+                        <label>Nombre *</label>
+                        <input type="text" id="rNuevoNombre" placeholder="Nombre">
+                    </div>
+                    <div class="form-group">
+                        <label>Apellido *</label>
+                        <input type="text" id="rNuevoApellido" placeholder="Apellido">
+                    </div>
+                    <div class="form-group">
+                        <label>DNI *</label>
+                        <input type="text" id="rNuevoDni" placeholder="DNI">
+                    </div>
+                    <div class="form-group">
+                        <label>Teléfono *</label>
+                        <input type="text" id="rNuevoTelefono" placeholder="Teléfono">
+                    </div>
+                    <div class="form-group">
+                        <label>Correo</label>
+                        <input type="email" id="rNuevoCorreo" placeholder="Correo (opcional)">
+                    </div>
+                </div>
+                <button class="status pending" style="margin-bottom:16px;font-size:13px" onclick="registrarNuevoCliente()">+ Crear y seleccionar cliente</button>
+
+                <div class="opciones">
+                    <button class="cancelar" onclick="irPaso(2)">← Volver</button>
+                    <button class="status completed" id="btnRegistrarReserva" onclick="registrarReserva()" style="border:none;cursor:pointer;font-size:14px;font-weight:700;color:white">Registrar Reserva</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/reserva.js"></script>
+</body>
+</html>

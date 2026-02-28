@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Mesas — El Sultán</title>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="home.html" class="logo"><i class="bx bx-food-menu"></i>
+            <div class="logo-name"><span>El</span>Sultan</div>
+        </a>
+        <nav class="side-menu">
+            <ul>
+                <li><a href="home.html"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+                <li><a href="reservas.html"><i class='bx bxs-book'></i>Reservas</a></li>
+                <li><a href="clientes.html"><i class='bx bx-group'></i>Clientes</a></li>
+                <li><a href="mesas.html"><i class='bx bx-chair'></i>Mesas</a></li>
+            </ul>
+        </nav>
+        <nav class="side-menu">
+            <ul><li><a href="login.html" class="logout"><i class="bx bx-arrow-out-left-square-half"/></i>Salir</a></li></ul>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <header>
+            <i class='bx bx-menu'></i>
+            <span style="flex:1"></span>
+            <span class="notif cambio"></span>
+            <a href="#" class="profile"><img src="img/admin.png" alt="Usuario"></a>
+        </header>
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Gestión de Mesas</h1>
+                    <p><button class="status pending" onclick="abrirModalNuevo()">+ Registrar Mesa</button></p>
+                </div>
+            </div>
+
+            <div class="bottom-data">
+                <div class="orders" style="flex:1">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nro. Mesa</th>
+                                <th>Ubicación</th>
+                                <th>Capacidad</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyMesas">
+                            <tr><td colspan="4" style="text-align:center;padding:24px;color:var(--dark-grey)">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- ===== MODAL DETALLE ===== -->
+    <div id="modalDetalle" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:620px;max-width:95vw">
+            <span class="close" onclick="closeModal('modalDetalle')">&times;</span>
+            <h2 style="margin-bottom:20px"><i class='bx bxs-info-circle' style="color:#3f912e"></i> Detalle de Mesa</h2>
+            <div class="detalle-panel-2col" id="detalleContent"></div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL FORMULARIO (Crear / Editar) ===== -->
+    <div id="modalForm" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:420px;max-width:95vw">
+            <span class="close" onclick="closeModal('modalForm')">&times;</span>
+            <h2 id="modalFormTitle" style="margin-bottom:20px">Registrar Mesa</h2>
+            <input type="hidden" id="fId">
+            <div class="form-panel">
+                <div class="form-group">
+                    <label>Número de Mesa *</label>
+                    <input type="number" id="fNumero" placeholder="Ej: 10, 20, 30..." min="1">
+                    <span class="text-danger" id="eNumero"></span>
+                </div>
+                <div class="form-group">
+                    <label>Ubicación *</label>
+                    <select id="fUbicacion">
+                        <option value="">Selecciona ubicación</option>
+                        <option value="Ventana">Ventana</option>
+                        <option value="Interior">Interior</option>
+                        <option value="Terraza">Terraza</option>
+                    </select>
+                    <span class="text-danger" id="eUbicacion"></span>
+                </div>
+                <div class="form-group">
+                    <label>Capacidad *</label>
+                    <input type="number" id="fCapacidad" placeholder="Número de personas" min="1">
+                    <span class="text-danger" id="eCapacidad"></span>
+                </div>
+                <div class="form-actions" style="display:flex;gap:10px;justify-content:flex-end;margin-top:8px">
+                    <button class="cancelar" onclick="closeModal('modalForm')">Cancelar</button>
+                    <button class="status pending" id="btnGuardar" onclick="guardarMesa()">Guardar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== MODAL CONFIRMAR ELIMINAR ===== -->
+    <div id="modalEliminar" class="modal" style="display:none;align-items:center;justify-content:center">
+        <div class="modal-content" style="width:380px;max-width:95vw;text-align:center">
+            <span class="close" onclick="closeModal('modalEliminar')">&times;</span>
+            <i class='bx bxs-trash' style="font-size:48px;color:var(--danger);margin:16px 0;display:block"></i>
+            <h2 style="margin-bottom:8px">¿Eliminar Mesa?</h2>
+            <p id="msgEliminar" style="color:var(--dark-grey);margin-bottom:24px"></p>
+            <div style="display:flex;gap:10px;justify-content:center">
+                <button class="cancelar" onclick="closeModal('modalEliminar')">Cancelar</button>
+                <button class="status delete-action" id="btnConfirmarEliminar" onclick="confirmarEliminar()" style="color:white;border:none;cursor:pointer;font-size:14px;font-weight:700">Eliminar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/mesa.js"></script>
+</body>
+</html>

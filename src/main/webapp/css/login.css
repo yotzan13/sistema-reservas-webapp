@@ -1,0 +1,174 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f0f4f8;
+        }
+
+        .login-wrapper {
+            display: flex;
+            width: 820px;
+            max-width: 96vw;
+            min-height: 480px;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.13);
+        }
+
+        /* Panel izquierdo decorativo */
+        .login-brand {
+            flex: 1;
+            background: linear-gradient(140deg, #1565C0 0%, #1976D2 50%, #42A5F5 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 36px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-brand::before {
+            content: '';
+            position: absolute;
+            width: 320px; height: 320px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.07);
+            top: -80px; right: -80px;
+        }
+        .login-brand::after {
+            content: '';
+            position: absolute;
+            width: 200px; height: 200px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.06);
+            bottom: -60px; left: -40px;
+        }
+
+        .brand-icon {
+            font-size: 64px;
+            margin-bottom: 16px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-title {
+            font-size: 38px;
+            font-weight: 800;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .brand-title span { color: rgba(255,255,255,0.6); }
+
+        .brand-sub {
+            font-size: 13px;
+            opacity: 0.75;
+            margin-top: 8px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Panel derecho — formulario */
+        .login-form-panel {
+            flex: 1;
+            background: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 40px;
+        }
+
+        .login-form-panel h2 {
+            font-size: 26px;
+            font-weight: 700;
+            color: #363949;
+            margin-bottom: 6px;
+        }
+
+        .login-form-panel p.sub {
+            font-size: 13px;
+            color: #AAAAAA;
+            margin-bottom: 32px;
+        }
+
+        .form-field {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+
+        .form-field label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #363949;
+            margin-bottom: 7px;
+        }
+
+        .field-input {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .field-input i {
+            position: absolute;
+            left: 13px;
+            font-size: 20px;
+            color: #AAAAAA;
+        }
+
+        .field-input input {
+            width: 100%;
+            padding: 11px 14px 11px 42px;
+            border: 1.5px solid #eee;
+            border-radius: 10px;
+            font-size: 14px;
+            color: #363949;
+            outline: none;
+            transition: border 0.2s;
+            background: #f6f6f9;
+        }
+
+        .field-input input:focus {
+            border-color: #1976D2;
+            background: white;
+        }
+
+        .btn-login {
+            width: 100%;
+            padding: 13px;
+            background: #1976D2;
+            color: white;
+            font-size: 15px;
+            font-weight: 700;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 8px;
+        }
+
+        .btn-login:hover  { background: #1565C0; }
+        .btn-login:active { transform: scale(0.98); }
+
+        .error-msg {
+            color: #D32F2F;
+            font-size: 13px;
+            margin-top: 12px;
+            text-align: center;
+            min-height: 18px;
+        }
+
+        @media (max-width: 600px) {
+            .login-brand { display: none; }
+            .login-form-panel { padding: 40px 24px; }
+        }

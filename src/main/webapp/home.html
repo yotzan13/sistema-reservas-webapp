@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/styles.css">
+    <link href='https://cdn.boxicons.com/fonts/basic/boxicons.min.css' rel='stylesheet'>
+    <link rel="icon" type="image/x-icon" href="img/favicon.ico">
+    <title>Dashboard — El Sultán</title>
+    <style>
+        .cards li .info h3 { font-size: 20px; font-weight: 700; color: var(--dark); }
+        .cards li .info p  { font-size: 13px; color: var(--dark-grey); }
+        .skeleton { background: linear-gradient(90deg,#eee 25%,#f5f5f5 50%,#eee 75%); background-size:200%; animation: sk 1.2s infinite; border-radius:6px; display:inline-block; }
+        @keyframes sk { 0%{background-position:200%} 100%{background-position:-200%} }
+        .stat-num { font-size: 28px; font-weight: 800; }
+    </style>
+</head>
+<body>
+    <aside class="sidebar">
+        <a href="home.html" class="logo"><i class="bx bx-food-menu"></i>
+            <div class="logo-name"><span>El</span>Sultan</div>
+        </a>
+        <nav class="side-menu">
+            <ul>
+                <li><a href="home.html"><i class='bx bxs-dashboard'></i>Dashboard</a></li>
+                <li><a href="reservas.html"><i class='bx bxs-book'></i>Reservas</a></li>
+                <li><a href="clientes.html"><i class='bx bx-group'></i>Clientes</a></li>
+                <li><a href="mesas.html"><i class='bx bx-chair'></i>Mesas</a></li>
+            </ul>
+        </nav>
+        <nav class="side-menu">
+            <ul><li><a href="login.html" class="logout"><i class="bx bx-arrow-out-left-square-half"/></i>Salir</a></li></ul>
+        </nav>
+    </aside>
+
+    <div class="content">
+        <header>
+            <i class='bx bx-menu'></i>
+            <span style="flex:1"></span>
+            <span class="notif cambio"></span>
+            <a href="#" class="profile"><img src="img/admin.png" alt="Usuario"></a>
+        </header>
+
+        <main>
+            <div class="header">
+                <div class="left">
+                    <h1>Dashboard</h1>
+                </div>
+            </div>
+
+            <ul class="cards" id="cards">
+                <li>
+                    <i class='bx bxs-book' style="background:var(--light-primary);color:var(--primary)"></i>
+                    <span class="info"><h3 id="cTotal">—</h3><p>Reservas hoy</p></span>
+                </li>
+                <li>
+                    <i class="bx bx-calendar-event" style="background:var(--light-warning);color:var(--warning)"></i>
+                    <span class="info"><h3 id="cPendientes">—</h3><p>Pendientes</p></span>
+                </li>
+                <li>
+                    <i class='bx bxs-check-circle' style="background:var(--light-success);color:var(--success)"></i>
+                    <span class="info"><h3 id="cConfirmadas">—</h3><p>Confirmadas</p></span>
+                </li>
+                <li>
+                    <i class='bx bx-group' style="background:var(--light-danger);color:var(--danger)"></i>
+                    <span class="info"><h3 id="cClientes">—</h3><p>Clientes registrados</p></span>
+                </li>
+            </ul>
+
+            <div class="bottom-data">
+                <div class="orders" style="flex:1">
+                    <div class="header">
+                        <i class='bx bxs-time' style="color:var(--warning)"></i>
+                        <h3>Reservas Pendientes</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Mesa</th>
+                                <th>Personas</th>
+                                <th>Ubicación</th>
+                                <th>Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyPendientes">
+                            <tr><td colspan="8" style="text-align:center;color:var(--dark-grey);padding:24px">Cargando...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="js/index.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>
